@@ -14,7 +14,7 @@ import time
 
 user_login, insta_user, insta_password = (False, False, False)
 options = webdriver.ChromeOptions()
-options.add_argument('headless')
+# options.add_argument('headless')
 options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=options, executable_path=r'C:/Program Files (x86)/Google/Chrome/Application/chromedriver.exe')
 
@@ -53,11 +53,12 @@ while True:
         if link not in links:
             posts.write(link + '\n')
             driver.get(link)
-            time.sleep(3)
             print(f'// Link {linknum} //\nLINK ADDRESS: {link}\n')
             linknum += 1
             r = requests.get(link)
             try:
+                WebDriverWait(driver, 8).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "glyphsSpriteShare__outline__24__grey_9")))
                 code = re.findall(r"(?<=Code:).*?(?= -)", r.content.decode('utf-8'))[0]
             except:
                 print('No code found on that link\n')

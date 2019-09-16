@@ -33,17 +33,23 @@ def instagram_login(driver, user=False, password=False):
             password = getpass.getpass('Instgram password: ')
         username_input.send_keys(user)
         password_input.send_keys(password)
-        submit.click()
+
         try:
-            print('Login in... please wait')
+            submit.click()
+        except:
+            print("\nYou can't enter empty inputs!")
+            continue
+
+        try:
+            print('\nLogin in... please wait')
             errorMessage = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "_6q-tv")))
             print("Login successful!")
             break
         except:
             pass
+            print(driver.find_element_by_id("slfErrorAlert").text + '\n')
 
-        print(driver.find_element_by_id("slfErrorAlert").text + '\n')
         if input('*NOT RECOMMANDED* Do you want to try continue without login? (y/n): ') == 'y':
             print('')
             return (False, False, False)
